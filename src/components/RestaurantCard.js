@@ -1,4 +1,4 @@
-import { CDN_URL } from "../utils/config";
+import { CDN_URL } from "../utils/constants";
 
 const RestaurantCard = ({ resData }) => {
   const {
