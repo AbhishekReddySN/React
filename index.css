@@ -86,3 +86,13 @@
 .filter{
     display: flex;
 }
+
+.user-card{
+    background-color: #f0f0f0;
+    width: 250px;
+    height: 90%;
+    padding: 5px;
+    margin: 10px;
+    border-radius: 5px;
+    text-size-adjust:calc();
+}
