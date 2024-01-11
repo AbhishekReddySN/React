@@ -1,4 +1,4 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { PromotedRescard } from "./RestaurantCard";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer";
@@ -8,6 +8,7 @@ const Body = () => {
   const [listofRestaurants, setlistofRestaurants] = useState([]);
   const [filterdRestaurents, setFilteredrestaurents] = useState([]);
   const [searchText, setsearchText] = useState("");
+  const RestaurantCardPromoted = PromotedRescard(RestaurantCard);
 
   useEffect(() => {
     fetchData();
@@ -35,18 +36,18 @@ const Body = () => {
     <Shimmer />
   ) : (
     <div className="body">
-      <div className="filter">
-        <div className="search">
+      <div className="filter flex">
+        <div className="search m-4 p-4">
           <input
             type="text"
-            className="search-box"
+            className="border border-solid border-black"
             value={searchText}
             onChange={(e) => {
               setsearchText(e.target.value);
             }}
           />
           <button
-            className="search-button"
+            className="search-button px-4 py-2 bg-green-100 m-4 rounded-lg"
             onClick={() => {
               const filteredRest = listofRestaurants.filter((res) => {
                 const restaurantNameMatch = res.info.name
@@ -65,24 +66,32 @@ const Body = () => {
             Search
           </button>
         </div>
-        <button
-          onClick={() => {
-            const TopresObj = listofRestaurants.filter(
-              (res) => res.info.avgRating >= 4
-            );
-            setFilteredrestaurents(TopresObj);
-          }}
-          className="filter-btn"
-        >
-          Top Rated Restro
-        </button>
+        <div className="m-4 p-4 flex items-center ">
+          <button
+            onClick={() => {
+              const TopresObj = listofRestaurants.filter(
+                (res) => res.info.avgRating >= 4
+              );
+              setFilteredrestaurents(TopresObj);
+            }}
+            className="px-4 py-2 border border-black bg-pink-900 rounded-lg "
+          >
+            Top Rated Restro
+          </button>
+        </div>
       </div>
-      <div className="res-container">
-        {filterdRestaurents.map((res) => (
-          <Link key={res.info.id} to={"/restaurents/" + res.info.id}>
-            <RestaurantCard resData={res} />
-          </Link>
-        ))}
+      <div className="res-container flex flex-wrap">
+        {filterdRestaurents.map((res) => {
+          return (
+            <Link key={res.info.id} to={"/restaurents/" + res.info.id}>
+              {res.info.aggregatedDiscountInfoV3.discountTag ? (
+                <RestaurantCardPromoted resData={res} />
+              ) : (
+                <RestaurantCard resData={res} />
+              )}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
